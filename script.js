@@ -23,11 +23,14 @@ const flashcards = [
     { question: '14B', answer: 'Doctor down' }
 ];
 
-// Get elements
+const flipDuration = 600; // Duration of the flip animation in milliseconds
+
 const cardElement = document.querySelector('.card');
 const questionElement = document.querySelector('.question');
 const answerElement = document.querySelector('.answer');
 const nextButton = document.getElementById('next');
+
+let isFlipping = false;
 
 // Function to display a random flashcard
 function displayRandomFlashcard() {
@@ -38,17 +41,26 @@ function displayRandomFlashcard() {
     // Update the question and answer elements
     questionElement.textContent = flashcard.question;
     answerElement.textContent = flashcard.answer;
-    // Remove flipped class to show the front side
+    // Ensure card is in front position
     cardElement.classList.remove('flipped');
 }
 
 // Function to show the next flashcard
 function nextFlashcard() {
-    displayRandomFlashcard();
+    if (isFlipping) return; // Prevent next flashcard while flipping
+    isFlipping = true;
+    cardElement.classList.add('flipped');
+    // Set a timeout to display the next card after flip animation
+    setTimeout(() => {
+        displayRandomFlashcard();
+        cardElement.classList.remove('flipped');
+        isFlipping = false;
+    }, flipDuration); // Duration matches the flip animation duration
 }
 
 // Add event listener to flip the card on click
 cardElement.addEventListener('click', () => {
+    if (isFlipping) return; // Prevent flipping while transitioning
     cardElement.classList.toggle('flipped');
 });
 
