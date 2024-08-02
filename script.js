@@ -41,21 +41,44 @@ function displayRandomFlashcard() {
     // Update the question and answer elements
     questionElement.textContent = flashcard.question;
     answerElement.textContent = flashcard.answer;
-    // Ensure card is in front position
-    cardElement.classList.remove('flipped');
+}
+
+// Function to flip the card to the back side
+function flipToBack() {
+    return new Promise((resolve) => {
+        cardElement.classList.add('flipped');
+        setTimeout(() => {
+            resolve();
+        }, flipDuration);
+    });
+}
+
+// Function to flip the card to the front side
+function flipToFront() {
+    return new Promise((resolve) => {
+        cardElement.classList.remove('flipped');
+        setTimeout(() => {
+            resolve();
+        }, flipDuration);
+    });
 }
 
 // Function to show the next flashcard
-function nextFlashcard() {
+async function nextFlashcard() {
     if (isFlipping) return; // Prevent next flashcard while flipping
     isFlipping = true;
-    cardElement.classList.add('flipped');
-    // Set a timeout to display the next card after flip animation
-    setTimeout(() => {
-        displayRandomFlashcard();
-        cardElement.classList.remove('flipped');
-        isFlipping = false;
-    }, flipDuration); // Duration matches the flip animation duration
+
+    // Flip to the back side if currently showing the front
+    if (!cardElement.classList.contains('flipped')) {
+        await flipToBack();
+    }
+
+    // Display the new flashcard
+    displayRandomFlashcard();
+
+    // Flip to the front side to show the new card
+    await flipToFront();
+    isFlipping = false;
 }
 
 // Add event listener to flip the card on click
