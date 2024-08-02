@@ -30,8 +30,6 @@ const questionElement = document.querySelector('.question');
 const answerElement = document.querySelector('.answer');
 const nextButton = document.getElementById('next');
 
-let isFlipping = false;
-
 // Function to display a random flashcard
 function displayRandomFlashcard() {
     // Get a random index
@@ -41,16 +39,6 @@ function displayRandomFlashcard() {
     // Update the question and answer elements
     questionElement.textContent = flashcard.question;
     answerElement.textContent = flashcard.answer;
-}
-
-// Function to flip the card to the back side
-function flipToBack() {
-    return new Promise((resolve) => {
-        cardElement.classList.add('flipped');
-        setTimeout(() => {
-            resolve();
-        }, flipDuration);
-    });
 }
 
 // Function to flip the card to the front side
@@ -65,20 +53,13 @@ function flipToFront() {
 
 // Function to show the next flashcard
 async function nextFlashcard() {
-    if (isFlipping) return; // Prevent next flashcard while flipping
-    isFlipping = true;
-
     // Flip to the back side if currently showing the front
-    if (!cardElement.classList.contains('flipped')) {
-        await flipToBack();
+    if (cardElement.classList.contains('flipped')) {
+        await flipToFront();
     }
 
     // Display the new flashcard
     displayRandomFlashcard();
-
-    // Flip to the front side to show the new card
-    await flipToFront();
-    isFlipping = false;
 }
 
 // Add event listener to flip the card on click
