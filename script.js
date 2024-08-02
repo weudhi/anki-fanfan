@@ -23,7 +23,11 @@ const flashcards = [
     { question: '14B', answer: 'Doctor down' }
 ];
 
-let currentIndex = 0;
+// Get elements
+const cardElement = document.querySelector('.card');
+const questionElement = document.querySelector('.question');
+const answerElement = document.querySelector('.answer');
+const nextButton = document.getElementById('next');
 
 // Function to display a random flashcard
 function displayRandomFlashcard() {
@@ -34,21 +38,14 @@ function displayRandomFlashcard() {
     // Update the question and answer elements
     questionElement.textContent = flashcard.question;
     answerElement.textContent = flashcard.answer;
-    // Update the current index
-    currentIndex = randomIndex;
+    // Remove flipped class to show the front side
+    cardElement.classList.remove('flipped');
 }
 
 // Function to show the next flashcard
 function nextFlashcard() {
     displayRandomFlashcard();
-    cardElement.classList.remove('flipped');
 }
-
-// Elements
-const cardElement = document.querySelector('.card');
-const questionElement = document.querySelector('.question');
-const answerElement = document.querySelector('.answer');
-const nextButton = document.getElementById('next');
 
 // Add event listener to flip the card on click
 cardElement.addEventListener('click', () => {
@@ -58,5 +55,5 @@ cardElement.addEventListener('click', () => {
 // Add event listener to the next button
 nextButton.addEventListener('click', nextFlashcard);
 
-// Display the first flashcard initially
+// Display a random flashcard initially
 displayRandomFlashcard();
