@@ -64,7 +64,6 @@ async function nextFlashcard() {
 
 // Add event listener to flip the card on click
 cardElement.addEventListener('click', () => {
-    if (isFlipping) return; // Prevent flipping while transitioning
     cardElement.classList.toggle('flipped');
 });
 
